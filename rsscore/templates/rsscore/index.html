@@ -1,0 +1,9 @@
+{% if latest_rssfeed_list %}
+    <ul>
+    {% for feed in latest_rssfeed_list %}
+        <li><a href="/rss/{{ feed.id }}/">{{ feed.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No feeds are available.</p>
+{% endif %}

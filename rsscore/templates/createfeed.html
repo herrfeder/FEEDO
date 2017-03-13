@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+
+{% block javascript %}
+<script>
+
+function set_form_value(form_key_id,form_type_id,form_url_id) {
+	var temp_html = document.getElementById("id_right_click_info").innerHTML;
+	$(form_key_id).val(temp_html);
+	var temp_url = document.getElementById(form_url_id);
+	var temp_type = document.getElementById(form_type_id);
+	console.log(temp_type);
+	for (i=0; i < temp_type.options.length; i++) {
+		var regres = temp_html.search('^&lt;'+temp_type.options[i].value);
+		if (regres==0) {
+			temp_type.value = temp_type.options[i].value;
+		}
+	
+	}
+
+	console.log("Object in right_click_info:"+document.getElementById("id_right_click_info").targetpointer);	
+
+};
+
+function check_and_return_href(element) {
+	var temp_element = element.target;
+	console.log("Temp_element_on_first:"+temp_element);
+	if (temp_element.href) {
+
+	console.log("Temp_element_first_return:"+temp_element);
+		return String(temp_element.href);
+	} else {
+
+		console.log("Temp_element_on_first:"+temp_element);
+		new_element = element.target;
+		while (	!temp_element.href ) {
+			temp_element = temp_element.parentElement;
+
+			if ( temp_element.nodeName == "HTML" ) {
+				console.log("reached top element, return false")
+				return false;
+			}
+		}
+		return String(temp_element.href);
+	}
+};
+
+function load_proxy_site(siteurl,clicked_element) {
+	console.log("Clicked Element"+clicked_element)
+	if (clicked_element != undefined) {
+	       clicked_html =  clicked_element.outerHTML;
+	} else {
+		clicked_html = "0";
+	};
+	set_status("Init proxy for getting website");
+	$.ajax({
+		type: 'POST',
+		url: '/rss/createfeed/ajax/loadproxysite/',
+		data: {siteurl:siteurl,
+		       clicked_html:clicked_html,
+		       csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
+		datatype: 'json',
+		success: function(data) {
+			if (data.filename) {
+
+				$("#id_iframe_external_site").attr('src', '/static/'+data.filename); 
+				set_status("Loaded sucessfully");
+				$("#id_iframe_history").html(parse_dict_to_html(data.click_dict));
+				$("#id_feed_link").val = data.siteurl;
+				console.log(data.filename);
+
+			}
+		}		
+	})
+};
+
+function set_status(status_string) {
+	$("#id_status_ajax_load").text(status_string);
+};
+
+function parse_dict_to_html(click_history) {
+	click_object_array = "";
+	var i = 0;
+
+	var table$ = $('<table id="id_history_table" />');
+
+	var click_object = eval(click_history);
+	click_object_array = $.map(click_object, function(value, index) {
+			return [value];
+	});
+	console.log("Evaluated_Click_object:"+click_object);
+	while (click_object[i] != undefined) {
+		var row$ = $('<tr/>');
+		row$.append($('<td/>').html('<a href="" id="id_history_'+i+'" ><li>'+i+'</li></a>'));
+		for (j=0; j < 1; j++) {
+			row$.append($('<td/>').html(click_object[i][j]));
+		}
+		i++;
+		table$.append(row$);
+	}
+	size_history_table = i;
+	
+	return table$
+};
+
+function delete_click_object_elements(index) {
+	var i = index;
+	while (click_object[i] == undefined ) {
+		delete click_object[i];
+		i++;
+	}
+};
+
+$(document).ready( function() {
+
+	size_history_table = 0;	
+	for (i=0;i<=size_history_table;i++) {
+		$("#id_history_"+i).click(function(e) {
+			e.preventDefault();
+			console.log("Click_history:"+e.target);
+			delete_click_object_elements(i);
+			parse_dict_to_html(click_object);
+			$("#id_iframe_external_site").attr('src', '/static/'+click_object[i][1]);
+		})
+	};
+
+	$("#id_add_title").click(function() {
+		set_form_value("#id_title_dom_key","id_title_dom_type");
+	});
+
+	$("#id_add_desc").click(function() {
+		set_form_value("#id_desc_dom_key","id_desc_dom_type");
+	});
+
+	$("#id_add_link").click(function() {
+		set_form_value("#id_link_dom_key","id_link_dom_type");
+	});
+
+	$("#id_add_img").click(function() {
+		set_form_value("#id_img_dom_key","id_img_dom_type");
+	});
+
+	$("#id_load_website_inp").change(function () {
+			siteurl = $(this).val();
+			console.log(siteurl);
+	});
+
+	$("#id_load_website_btn").click(function () {
+		load_proxy_site(siteurl);				
+	});
+	$("#id_iframe_external_site").on('load', function() {
+		console.log("is_loaded");
+		$("#id_iframe_external_site").contents().find("body").click(function(e) {
+			e.preventDefault();
+
+			console.log("Iframe_clicked:"+e.target);
+		        event_element = e;	
+			var temp_url = check_and_return_href(e);
+			console.log("Found_url:"+temp_url);
+			if (temp_url.match(/127.0.0.1:8000\/static\//g)) {
+			
+				temp_url = click_object_array[click_object_array.length-1]+e.target.href.split("127.0.0.1:8000/static")[1];
+				console.log("Temp_url:"+temp_url);
+				};
+			load_proxy_site(temp_url, e.target);
+		});
+
+		$("#id_iframe_external_site").contents().find("body").contextmenu(function(e) {				
+			e.preventDefault();
+			console.log(e.target.outerHTML);
+			$("#id_right_click_info").text(e.target.outerHTML);
+			var menu = $('.menu'); 
+			       //hide menu if already shown
+			       menu.hide(); 
+			       
+			       //get x and y values of the click event
+			       var pageX = e.pageX;
+			       var pageY = e.pageY;
+
+			       //position menu div near mouse cliked area
+
+
+			       var mwidth = menu.width();
+			       var mheight = menu.height();
+			       var screenWidth = $("#id_iframe_external_site").width();
+			       var screenHeight = $("#id_iframe_external_site").height();
+
+			       //if window is scrolled
+			       var scrTop = $(window).scrollTop();
+
+
+			       //finally show the menu
+			       $("#id_iframe_output").append(menu);
+				menu.show(); 
+			
+			});
+		$("#id_iframe_external_site").on("click", function(){
+				$(".menu").hide();
+			});
+	});
+	
+});
+
+
+
+
+</script>
+{% endblock %}
+
+{% block content %}
+{{ form.errors }}
+{{ form.non_field_errors }}
+
+<h1>FEEDO</h1>
+<table style="width:45%">
+<form action="" method="post">
+{% csrf_token %}
+
+
+{% for field in form %}
+	<tr>
+        {{ field.errors }}
+	<td>{{ field.label_tag }}</td><td>{{ field }}</td>
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+	</tr>
+{% endfor %}
+<input type="submit" value="Create Feed" />
+</form>
+</table>
+{% load static %}
+<table class="outer_bound" id="id_outer_bound">
+<tr>
+	<td>
+		<tr>
+		<table class="website_control" id="id_website_control">
+			<tr>
+			<td>	
+				<button type="button" id="id_load_website_btn">Load Website!</button>
+				<input type="text" id="id_load_website_inp">
+			</td>
+			<tr>
+
+				<td><label id="id_status_ajax_load" >STATUS</label></td>
+			</tr>
+			<tr>
+				<td class="upper_iframe_table"><div id="id_iframe_history"></div></td>
+			</tr>
+
+		</table>
+		</tr>
+		<tr>
+			<td class="left_iframe_table"><div id="id_iframe_output"></div></td>
+		</tr>
+	</td>
+
+
+	<td>
+		<table class="iframe_table">
+		<tr >
+			<td class="right_iframe_table"><iframe src="{% static "defaults/startiframe.html" %}" sandbox="allow-same-origin allow-scripts" class="external_iframe" style="border: 1px; width: 80%; height: 1000px;" id="id_iframe_external_site"></iframe></td>
+		</tr>
+		</table>
+	<td>
+</tr>
+</table>
+
+<div class="menu">
+ <ul>
+ <span id="id_right_click_info" class="right_click_info"=></span>	 
+ <a id="id_add_title" href="#"><li>Add As Title</li></a>
+ <a id="id_add_desc" href="#"><li>Add As Description</li></a>
+ <a id="id_add_image" href="#"><li>Add As Image</li></a>
+ <a id="id_add_page_counter" href="#"><li>Add Element for Crawling Page Numbers</li></a>
+ </ul>
+</div>
+ {% endblock %}
+
