@@ -2,3 +2,13 @@ db.sqlite3
 rsscore/static/*
 rsscore/migrations/*
 infos.txt
+*.pyc
+feedbot/logs
+feedbot/feedbot/logs
+feedbot/builds
+feedbot/dbs
+feedbot/eggs
+feedbot/project.egg-info
+feedbot/setup.py
+feedbot/feedbot/dbs
+feedbot/feedbot/eggs
