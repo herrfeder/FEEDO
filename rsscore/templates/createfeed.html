@@ -3,12 +3,15 @@
 {% block javascript %}
 <script>
 
-function set_form_value(form_key_id,form_type_id,form_url_id) {
+function set_form_value(form_key_id,form_type_id,form_parent_id,form_url_id) {
 	var temp_html = document.getElementById("id_right_click_info").innerHTML;
+	var iframe_url = return_iframe_url();
+
 	$(form_key_id).val(temp_html);
+	$(form_parent_id).val(iframe_url);
 	var temp_url = document.getElementById(form_url_id);
 	var temp_type = document.getElementById(form_type_id);
-	console.log(temp_type);
+	var temp_parent = document.getElementById(form_parent_id);
 	for (i=0; i < temp_type.options.length; i++) {
 		var regres = temp_html.search('^&lt;'+temp_type.options[i].value);
 		if (regres==0) {
@@ -17,8 +20,16 @@ function set_form_value(form_key_id,form_type_id,form_url_id) {
 	
 	}
 
-	console.log("Object in right_click_info:"+document.getElementById("id_right_click_info").targetpointer);	
+	console.log("Object in right_click_info:"+$("#id_right_click_info").attr("dompointer"));	
 
+};
+
+
+function return_iframe_url() {
+	
+	var full_url = document.getElementById("id_iframe_external_site").contentWindow.location.href;
+	full_url = full_url.split("http://127.0.0.1:8000/static/")[1].split("no_js")[1].split(".html")[0];
+	return full_url;
 };
 
 function check_and_return_href(element) {
@@ -74,7 +85,7 @@ function load_proxy_site(siteurl,clicked_element) {
 };
 
 function set_status(status_string) {
-	$("#id_status_ajax_load").text(status_string);
+	$("#id_status_ajax_load").val( $("#id_status_ajax_load").val() + "\n" + status_string);
 };
 
 function parse_dict_to_html(click_history) {
@@ -128,6 +139,7 @@ $(document).ready( function() {
 	});
 
 	$("#id_add_desc").click(function() {
+		console.log("Clicked desc");
 		set_form_value("#id_desc_dom_key","id_desc_dom_type");
 	});
 
@@ -136,6 +148,7 @@ $(document).ready( function() {
 	});
 
 	$("#id_add_img").click(function() {
+		console.log("Clicked img");
 		set_form_value("#id_img_dom_key","id_img_dom_type");
 	});
 
@@ -168,6 +181,7 @@ $(document).ready( function() {
 			e.preventDefault();
 			console.log(e.target.outerHTML);
 			$("#id_right_click_info").text(e.target.outerHTML);
+			$("#id_right_click_info").attr("dompointer",e.target);
 			var menu = $('.menu'); 
 			       //hide menu if already shown
 			       menu.hide(); 
@@ -270,7 +284,8 @@ $(document).ready( function() {
  <span id="id_right_click_info" class="right_click_info"=></span>	 
  <a id="id_add_title" href="#"><li>Add As Title</li></a>
  <a id="id_add_desc" href="#"><li>Add As Description</li></a>
- <a id="id_add_image" href="#"><li>Add As Image</li></a>
+ <a id="id_add_link" href="#"><li>Add As Link</li></a>
+ <a id="id_add_img" href="#"><li>Add As Image</li></a>
  <a id="id_add_page_counter" href="#"><li>Add Element for Crawling Page Numbers</li></a>
  </ul>
 </div>

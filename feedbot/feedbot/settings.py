@@ -6,7 +6,7 @@
 #     http://doc.scrapy.org/topics/settings.html
 #
 import sys
-sys.path.insert(0, '/home/herrfeder/ownCloud/IT/Programmierung/Python/FEEDO/')
+sys.path.insert(0, '/home/herrfeder/django-rpi/FEEDO/')
 
 import os
 os.environ['DJANGO_SETTINGS_MODULE'] = 'FEEDO.settings'
@@ -22,7 +22,7 @@ ITEM_PIPELINES = {
     'feedbot.pipelines.FeedbotPipeline': 1000,
 }
 
-SPLASH_URL = 'http://127.0.0.1:8050'
+SPLASH_URL = 'http://192.168.178.39:8050'
 
 SPIDER_MIDDLEWARES = {
         'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,

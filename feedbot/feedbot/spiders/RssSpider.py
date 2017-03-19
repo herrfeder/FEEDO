@@ -11,10 +11,10 @@ class RssSpider(Spider):
     userfeeds = Feed.objects.all()
 
     name = "rssspider"
-    allowed_domains = [str(userfeeds[1].feed_link).split("//")[1]]
-    start_urls = [str(userfeeds[1].feed_link)]
+#    allowed_domains = [str(userfeeds[1].feed_link).split("//")[1]]
+#    start_urls = [str(userfeeds[1].feed_link)]
 
-
+    start_urls = "test"
     def start_requests(self):
         for url in self.start_urls:
             yield SplashRequest(url, callback=self.parse, args={'wait':0.5})

@@ -3,6 +3,7 @@ rsscore/static/*
 rsscore/migrations/*
 infos.txt
 *.pyc
+feedbot/twistd.pid
 feedbot/logs
 feedbot/feedbot/logs
 feedbot/builds

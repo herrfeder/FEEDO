@@ -22,6 +22,6 @@ class SiteSaveSpider(Spider):
     def parse(self, response):
         #pdb.set_trace()
         print "TEST in parse"
-        with open('/home/herrfeder/ownCloud/IT/Programmierung/Python/FEEDO/rsscore/static/'+self.allowed_domains[0].split("://")[1].replace("/",".")+'.html', 'w') as f:
+        with open('/home/herrfeder/django-pi/FEEDO/rsscore/static/'+self.allowed_domains[0].split("://")[1].replace("/",".")+'.html', 'w') as f:
             for line in response.body:
                 f.write(line)
