@@ -8,7 +8,7 @@ function set_form_value(form_key_id,form_type_id,form_parent_id,form_url_id) {
 	var iframe_url = return_iframe_url();
 
 	$(form_key_id).val(temp_html);
-	$(form_parent_id).val(iframe_url);
+	$(form_url_id).val(iframe_url);
 	var temp_url = document.getElementById(form_url_id);
 	var temp_type = document.getElementById(form_type_id);
 	var temp_parent = document.getElementById(form_parent_id);
@@ -24,6 +24,17 @@ function set_form_value(form_key_id,form_type_id,form_parent_id,form_url_id) {
 
 };
 
+
+function return_dom_parent(element) {
+	var el_parent = element;
+	while (el_parent.attributes.length == 0 && (el_parent.attributes.title || el_parent.attributes.href || !el_parent.attributes.alt || !el_parent.attributes.target )) {
+		console.log("Parent:"+el_parent);
+		el_parent = el_parent.parentElement;
+	}
+
+	return el_parent;
+
+}
 
 function return_iframe_url() {
 	
@@ -181,7 +192,9 @@ $(document).ready( function() {
 			e.preventDefault();
 			console.log(e.target.outerHTML);
 			$("#id_right_click_info").text(e.target.outerHTML);
-			$("#id_right_click_info").attr("dompointer",e.target);
+			new_value = e.target;
+			var returnvalue = return_dom_parent(e.target);
+			$("#id_right_click_info").attr("parent",e.target);
 			var menu = $('.menu'); 
 			       //hide menu if already shown
 			       menu.hide(); 
