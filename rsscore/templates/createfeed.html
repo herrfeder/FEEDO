@@ -39,7 +39,7 @@ function return_dom_parent(element) {
 	if (el_parent.id) {
 		result_string += "id:"+el_parent.id+" ";
 	}
-	if (el_parent.classList) {
+	if (el_parent.classList[0]) {
 		result_string += "class:"+el_parent.classList[0]+" ";
 	}
 

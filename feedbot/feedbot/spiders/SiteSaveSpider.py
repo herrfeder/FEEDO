@@ -3,6 +3,7 @@ from scrapy import Request
 import pdb
 import scrapy
 from scrapy_splash import SplashRequest
+import os
 
 class SiteSaveSpider(Spider):
 
@@ -19,9 +20,20 @@ class SiteSaveSpider(Spider):
 
             print "TEST after yield"
 
+
+    def touch(self,file_path):
+        try:
+            os.utime(file_path, None)
+        except OSError:
+            open(file_path, 'a').close()
+
     def parse(self, response):
+
+        file_path = '/home/herrfeder/django-rpi/FEEDO/rsscore/static/'+self.allowed_domains[0].split("://")[1].replace("/",".")+'.html'
+        self.touch(file_path)
         #pdb.set_trace()
         print "TEST in parse"
-        with open('/home/herrfeder/django-pi/FEEDO/rsscore/static/'+self.allowed_domains[0].split("://")[1].replace("/",".")+'.html', 'w') as f:
+        with open(file_path, 'w') as f:
             for line in response.body:
                 f.write(line)
+            f.close()
