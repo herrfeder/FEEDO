@@ -13,13 +13,13 @@ settings.configure(
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': '/home/herrfeder/ownCloud/IT/Programmierung/Python/FEEDO/db.sqlite3',
+            'NAME': '/home/herrfeder/django-rpi/FEEDO/db.sqlite3',
             }
         }
 )
 import django
 django.setup()
-sys.path.append(os.path.abspath("/home/herrfeder/ownCloud/IT/Programmierung/Python/FEEDO/"))
+sys.path.append(os.path.abspath("/home/herrfeder/django-rpi/FEEDO/"))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'FEEDO.settings'
 
 from rsscore.models import Feed
@@ -202,6 +202,8 @@ def get_link(user, feedname):
     
     return [feed_link]
 
-generate_dom_elements("","","","")
+print get_title("testuser","test_hdarea_org")
+
+#generate_dom_elements("","","","")
 
 #print gen_xml(test_dict)

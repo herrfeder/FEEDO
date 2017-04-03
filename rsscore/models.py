@@ -13,16 +13,19 @@ class Feed(models.Model):
     title_dom_type = models.CharField(max_length=10, choices=elements)
     title_dom_key = models.CharField(max_length=200)
     title_dom_parent = models.CharField(max_length=200)
+    title_dom_ptype = models.CharField(max_length=10, choices=elements)
     title_dom_url = models.CharField(max_length=200)
 
     desc_dom_type = models.CharField(max_length=10, choices=elements)
     desc_dom_key = models.CharField(max_length=200,null=True)
     desc_dom_parent = models.CharField(max_length=200,null=True)
+    desc_dom_ptype = models.CharField(max_length=10,choices=elements)
     desc_dom_url = models.CharField(max_length=200)
      
     img_dom_type = models.CharField(max_length=10, choices=elements)
     img_dom_key = models.CharField(max_length=200)
     img_dom_parent = models.CharField(max_length=200)
+    img_dom_ptype = models.CharField(max_length=10, choices=elements)
     img_dom_url = models.CharField(max_length=200)
     
     request_types = request_type

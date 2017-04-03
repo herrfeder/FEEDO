@@ -16,6 +16,10 @@ class CreateFeedForm(forms.Form):
     title_dom_parent = forms.CharField(max_length=200,
                                        min_length=1,
                                        label="Parent of title")
+    title_dom_ptype = forms.ChoiceField(widget=forms.Select,
+                                       choices=elementselection,
+                                       label = "Title Parent Type")   
+
     title_dom_url = forms.CharField(max_length=200,
                                     required=False,
                                     label="Url of title")
@@ -30,6 +34,10 @@ class CreateFeedForm(forms.Form):
     desc_dom_parent = forms.CharField(max_length=200,
                                       min_length=1,
                                       label="Parent of description")
+    desc_dom_ptype = forms.ChoiceField(widget=forms.Select,
+                                       choices=elementselection,
+                                       label = "Desc Parent Type")   
+
     desc_dom_url = forms.CharField(max_length=200,
                                    required=False,
                                    label="Url of description")
@@ -44,6 +52,11 @@ class CreateFeedForm(forms.Form):
     img_dom_parent = forms.CharField(max_length=200,
                                       required=False,
                                       label="Parent of image")
+    img_dom_ptype = forms.ChoiceField(widget=forms.Select,
+                                       choices=elementselection,
+                                       label = "Img Parent Type")   
+
+
     img_dom_url = forms.CharField(max_length=200,
                                    required=False,
                                    label="Url of image")
@@ -55,6 +68,12 @@ class CreateFeedForm(forms.Form):
     link_dom_parent = forms.CharField(max_length=200,
                                       min_length=1,
                                       label="Parent of Link")
+    link_dom_ptype = forms.ChoiceField(widget=forms.Select,
+                                       choices=elementselection,
+                                       label = "Link Parent Type")   
+
+
+
     link_dom_url = forms.CharField(max_length=200,
                                    required=False,
                                    label="Url of link")
