@@ -28,6 +28,12 @@ class Feed(models.Model):
     img_dom_ptype = models.CharField(max_length=10, choices=elements)
     img_dom_url = models.CharField(max_length=200)
     
+    link_dom_type = models.CharField(max_length=10, choices=elements)
+    link_dom_key = models.CharField(max_length=200)
+    link_dom_parent = models.CharField(max_length=200)
+    link_dom_ptype = models.CharField(max_length=10, choices=elements)
+    link_dom_url = models.CharField(max_length=200)
+
     request_types = request_type
 
     request_type = models.CharField(max_length=4, choices=request_types)

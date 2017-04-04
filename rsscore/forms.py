@@ -61,7 +61,10 @@ class CreateFeedForm(forms.Form):
                                    required=False,
                                    label="Url of image")
 
-
+    link_dom_type = forms.ChoiceField(widget=forms.Select,
+                                      choices=elementselection,
+                                      label="Link Dom Type")
+ 
     link_dom_key = forms.CharField(max_length=200,
                                    min_length=1,
                                    label="Link Dom Key")
