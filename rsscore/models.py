@@ -11,34 +11,44 @@ class Feed(models.Model):
     elements = elementselection
 
     title_dom_type = models.CharField(max_length=10, choices=elements)
-    title_dom_key = models.CharField(max_length=200)
+    title_dom_key = models.CharField(max_length=200, null=True)
     title_dom_parent = models.CharField(max_length=200)
     title_dom_ptype = models.CharField(max_length=10, choices=elements)
     title_dom_url = models.CharField(max_length=200)
 
-    desc_dom_type = models.CharField(max_length=10, choices=elements)
+    desc_dom_type = models.CharField(max_length=10, choices=elements, null=True)
     desc_dom_key = models.CharField(max_length=200,null=True)
     desc_dom_parent = models.CharField(max_length=200,null=True)
-    desc_dom_ptype = models.CharField(max_length=10,choices=elements)
-    desc_dom_url = models.CharField(max_length=200)
+    desc_dom_ptype = models.CharField(max_length=10,choices=elements,null=True)
+    desc_dom_url = models.CharField(max_length=200, null=True)
      
-    img_dom_type = models.CharField(max_length=10, choices=elements)
-    img_dom_key = models.CharField(max_length=200)
-    img_dom_parent = models.CharField(max_length=200)
-    img_dom_ptype = models.CharField(max_length=10, choices=elements)
-    img_dom_url = models.CharField(max_length=200)
+    img_dom_type = models.CharField(max_length=10, choices=elements,null=True)
+    img_dom_key = models.CharField(max_length=200, null=True)
+    img_dom_parent = models.CharField(max_length=200, null=True)
+    img_dom_ptype = models.CharField(max_length=10, choices=elements, null=True)
+    img_dom_url = models.CharField(max_length=200, null=True)
     
     link_dom_type = models.CharField(max_length=10, choices=elements)
-    link_dom_key = models.CharField(max_length=200)
+    link_dom_key = models.CharField(max_length=200, null=True)
     link_dom_parent = models.CharField(max_length=200)
     link_dom_ptype = models.CharField(max_length=10, choices=elements)
     link_dom_url = models.CharField(max_length=200)
+    
+    crawl_dom_type = models.CharField(max_length=10, choices=elements,
+                                      null=True)
+    crawl_dom_key = models.CharField(max_length=200, null=True)
+    crawl_dom_parent = models.CharField(max_length=200, null=True)
+    crawl_dom_ptype = models.CharField(max_length=10, choices=elements,
+                                       null=True)
+    crawl_dom_url = models.CharField(max_length=200, null=True)
+    crawl_max = models.CharField(max_length=2, choices=((str(x), x) for x in
+                                                       range(1,32)), null=True)
 
     request_types = request_type
 
     request_type = models.CharField(max_length=4, choices=request_types)
-    feed_link = models.CharField(max_length=200)
-    feed_post_request = models.CharField(max_length=10000)
+    feed_link = models.CharField(max_length=200, null=True)
+    feed_post_request = models.CharField(max_length=10000, null=True)
 
 class EntryList(models.Model):
     feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
