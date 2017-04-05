@@ -138,14 +138,44 @@ def createfeed(request):
     
     if request.method == "POST":
         form = CreateFeedForm(request.POST)
+        print "FORM_ERROR"
+        print form.errors.as_data()
         if form.is_valid():
             feed = Feed(
                 feed_user = "test",
                 feed_name = form.cleaned_data['feedname'],
+
                 title_dom_type = form.cleaned_data['title_dom_type'],
                 title_dom_key = form.cleaned_data['title_dom_key'],
+                title_dom_parent = form.cleaned_data['title_dom_parent'],
+                title_dom_ptype = form.cleaned_data['title_dom_ptype'],
+                title_dom_url = form.cleaned_data['title_dom_url'],
+
                 desc_dom_type = form.cleaned_data['desc_dom_type'],
                 desc_dom_key = form.cleaned_data['desc_dom_key'],
+                desc_dom_parent = form.cleaned_data['desc_dom_parent'],
+                desc_dom_ptype = form.cleaned_data['desc_dom_ptype'],
+                desc_dom_url = form.cleaned_data['desc_dom_url'],
+
+                link_dom_type = form.cleaned_data['link_dom_type'],
+                link_dom_key = form.cleaned_data['link_dom_key'],
+                link_dom_parent = form.cleaned_data['link_dom_parent'],
+                link_dom_ptype = form.cleaned_data['link_dom_ptype'],
+                link_dom_url = form.cleaned_data['link_dom_url'],
+
+                img_dom_type = form.cleaned_data['img_dom_type'],
+                img_dom_key = form.cleaned_data['img_dom_key'],
+                img_dom_parent = form.cleaned_data['img_dom_parent'],
+                img_dom_ptype = form.cleaned_data['img_dom_ptype'],
+                img_dom_url = form.cleaned_data['img_dom_url'],
+
+                crawl_dom_type = form.cleaned_data['crawl_dom_type'],
+                crawl_dom_key = form.cleaned_data['crawl_dom_key'],
+                crawl_dom_parent = form.cleaned_data['crawl_dom_parent'],
+                crawl_dom_ptype = form.cleaned_data['crawl_dom_ptype'],
+                crawl_dom_url = form.cleaned_data['crawl_dom_url'],
+                crawl_max = form.cleaned_data['crawl_max'],
+
                 request_type = form.cleaned_data['url_type'],
                 feed_link = form.cleaned_data['feed_link'],
                 feed_post_request = form.cleaned_data['feed_post_request'],

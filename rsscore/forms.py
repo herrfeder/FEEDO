@@ -20,7 +20,7 @@ class CreateFeedForm(forms.Form):
                                        choices=elementselection,
                                        label = "Title Parent Type")   
 
-    title_dom_url = forms.CharField(max_length=2,
+    title_dom_url = forms.CharField(max_length=200,
                                     label="Url of title")
 
 

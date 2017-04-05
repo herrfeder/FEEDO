@@ -268,7 +268,9 @@ $(document).ready( function() {
 {% block content %}
 {{ form.errors }}
 {{ form.non_field_errors }}
-
+{{ form.regName.label_tag }}
+{{ form.regName }}
+{{ form.regName.errors }}
 <h1>FEEDO</h1>
 <table style="width:45%">
 <form action="" method="post">

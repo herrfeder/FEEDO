@@ -41,6 +41,8 @@ class Command(BaseCommand):
 
         print element_dict
 
+
+
 class FeedObject(object):
     def __init__(self):
         self.feed_list = []
@@ -132,16 +134,14 @@ def get_raw_html(how_to_get="file"):
 
 
 
-def generate_dom_elements(feedname,feedtitle,feedlink,feeddescription):
+def generate_dom_elements(feedname,feedtitle,feedlink,feeddescription="",feedimage="",feedcrawl=""):
     
     
     # fetching the html page
-    entryname = "filmtipps_new"
+    entryname = feedname
     # getting the items
     raw_html = get_raw_html()
     bsoup = BeautifulSoup(str(raw_html),'lxml')
-    #print get_title("test",entryname)
-    #print get_description("test",entryname)
     
     feed_element_parent = None
 
@@ -212,11 +212,11 @@ def get_element_info(element,user, feedname):
         feed_ptype  = Feed.objects.get(feed_name=feedname).desc_dom_ptype
         feed_url    = Feed.objects.get(feed_name=feedname).desc_dom_url
     elif element == "image":
-        feed_key    = Feed.objects.get(feed_name=feedname).image_dom_key
-        feed_type   = Feed.objects.get(feed_name=feedname).image_dom_type
-        feed_parent = Feed.objects.get(feed_name=feedname).image_dom_parent
-        feed_ptype  = Feed.objects.get(feed_name=feedname).image_dom_ptype
-        feed_url    = Feed.objects.get(feed_name=feedname).image_dom_url
+        feed_key    = Feed.objects.get(feed_name=feedname).img_dom_key
+        feed_type   = Feed.objects.get(feed_name=feedname).img_dom_type
+        feed_parent = Feed.objects.get(feed_name=feedname).img_dom_parent
+        feed_ptype  = Feed.objects.get(feed_name=feedname).img_dom_ptype
+        feed_url    = Feed.objects.get(feed_name=feedname).img_dom_url
     elif element == "link":
         feed_key    = Feed.objects.get(feed_name=feedname).link_dom_key
         feed_type   = Feed.objects.get(feed_name=feedname).link_dom_type
