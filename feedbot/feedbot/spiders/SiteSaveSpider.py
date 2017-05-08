@@ -7,8 +7,11 @@ import os
 
 class SiteSaveSpider(Spider):
 
-    def __init__(self, domain='', *args, **kwargs):
+    def __init__(self, domain='',
+                 filepath='/home/herrfeder/django-rpi/FEEDO/rsscore/static'
+                 , *args, **kwargs):
         super(SiteSaveSpider, self).__init__(*args, **kwargs)
+        self.filepath = filepath
         self.start_urls = [domain]
         self.allowed_domains = [domain]
     name = "sitesavespider"
@@ -29,10 +32,8 @@ class SiteSaveSpider(Spider):
 
     def parse(self, response):
 
-        file_path = '/home/herrfeder/django-rpi/FEEDO/rsscore/static/'+self.allowed_domains[0].split("://")[1].replace("/",".")+'.html'
+        file_path = self.filepath+self.allowed_domains[0].split("://")[1].replace("/",".")+'.html'
         self.touch(file_path)
-        #pdb.set_trace()
-        print "TEST in parse"
         with open(file_path, 'w') as f:
             for line in response.body:
                 f.write(line)
