@@ -15,6 +15,7 @@ import pdb
 import logging
 from scrapyd_api import ScrapydAPI
 from rsscore.models import Feed
+from time import strftime,gmtime
 
 from bs4 import BeautifulSoup, BeautifulStoneSoup, Tag, NavigableString, CData
 elements = ["title","description","link","image"]
@@ -90,7 +91,7 @@ class FeedObject(object):
 
 
     def write_rss(self,data):
-        with open(rss_path+"test_rss","w") as f:
+        with open(rss_path+"test_rss.rss","w") as f:
             for line in data:
                 f.write(line)
             f.close()
@@ -98,8 +99,8 @@ class FeedObject(object):
 
     def gen_rss(self):
 
-        header ='<?xml version="1.0" encoding="UTF-8" ?>\n<rss version="0.92">\n'
-        header += '<channel>'
+        header ='<?xml version="1.0" encoding="UTF-8" ?>\n<rss version="2.0">\n'
+        header += ' <channel>'
         header +=\
         '''
         <title>test</title>
@@ -110,11 +111,10 @@ class FeedObject(object):
         '''
 
         blank_str = \
-        '''
-        <item>
-            <title><![CDATA[{0}]></title>
+        '''<item>
+            <title>{0}</title>
             <link>{1}</link>
-            <description><![CData[{4}]]></description>
+            <crawlription>{4}</crawlription>
             <guid>{1}</guid>
             <pubDate>{3}</pubDate>
         </item>
@@ -151,10 +151,10 @@ class FeedObject(object):
             #pdb.set_trace()
             rss_entry =\
             blank_str.format(dicti["title"]
-                             ,dicti["link"]
+                             ,"https://www."+dicti["link"]
                              ,dicti["guid"]
                              ,dicti["pubDate"]
-                             ,dicti["description"])
+                             ,dicti["description"].replace("\\x","")[0:100])
             rss_feed+=rss_entry
         return rss_feed+footer
 
@@ -257,7 +257,7 @@ class FeedObject(object):
             print bsoup.find_all(parent.name,parent.attrs)[4]
 
             #for element in bsoup.find_all(text=test)[0].parent.parent:
-            #    print element
+            #    prinnt element
 
             #for element in bsoup.find_all('div',{'class':'smallteaser'}):
             #    print element.children()
@@ -273,7 +273,7 @@ class FeedObject(object):
             for element in elements:
                 temp_dict[element] = self.result_dict[element][i]
             temp_dict["guid"] = ""
-            temp_dict["pubDate"] = ""
+            temp_dict["pubDate"] = strftime("%a, %d %b %Y %X +0000", gmtime()) 
             temp_list.append(temp_dict)
         self.result_list = temp_list
 
