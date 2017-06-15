@@ -5,10 +5,11 @@ import scrapy
 from scrapy_splash import SplashRequest
 import os
 
+filepath='/home/herrfeder/django-rpi/FEEDO/rsscore/static/'
 class SiteSaveSpider(Spider):
 
     def __init__(self, domain='',
-                 filepath='/home/herrfeder/django-rpi/FEEDO/rsscore/static'
+                 filepath=filepath
                  , *args, **kwargs):
         super(SiteSaveSpider, self).__init__(*args, **kwargs)
         self.filepath = filepath
