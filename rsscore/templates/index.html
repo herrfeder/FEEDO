@@ -1,0 +1,14 @@
+{%extends "base.html" %}
+{%block head %}f33d0DASH{% endblock %}
+{%block content %}
+{% if user.username %}
+<p>Welcome {{ user.username }}</p>
+<table>
+
+</table>
+
+{% else %}
+<p>Welcome anonymous user!
+You need to login</p><br/>
+{% endif %}
+{% endblock %}

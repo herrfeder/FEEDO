@@ -1,4 +1,4 @@
-{% if latest_rssfeed_list %}
+f latest_rssfeed_list %}
     <ul>
     {% for feed in latest_rssfeed_list %}
         <li><a href="/rss/{{ feed.id }}/">{{ feed.title }}</a></li>

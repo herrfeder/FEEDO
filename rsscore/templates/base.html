@@ -1,33 +1,83 @@
-{% load static %}<!doctype html>
+{% load static %}
+{% load safestring %}
+<!doctype html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>{% block title %}Default Title{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
-    {% block stylesheet %}{% endblock %}
-  </head>
-  <body>
-    <header>
-      ...
-    </header>
-    <main>
-      {% block content %}
-      {% endblock %}
-    </main>
-    <footer>
-      ...
-    </footer>
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script> 
-  <!--  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
-	-->
+	<meta charset="utf-8">
+	<title>{% block title %}F33d0{% endblock %}</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+	{% block stylesheet %}{% endblock %}
+	{% block javascript %}
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script> 
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<script >
+		function initFunc() {
+			
+    			var message = "{{ action | stringfilter }}";
+			if (message) {
+				notify(message);
+			}
+		}
+		function notify(message) {
+			$("#notification").fadeIn("slow").append(message);
+			$(".dismiss").click(function(){
+			       $("#notification").fadeOut("slow");
+			});
+			$("#notification").delay(50).fadeOut(3000);
+			
+		}
 
 
+</script>
+		
+	</script>
+	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>-->
 	<!--<script src="{% static 'js/jquery-1.6.4.min.js' %}"></script> -->
-   <!--<script src="https://swisnl.github.io/jQuery-contextMenu/js/theme.js"></script>-->
-   <!--<script src="{% static 'js/jquery-ui.min.js' %}"></script>-->
-   <!--<script src="{% static 'js/app.js' %}"></script> -->
-    
-    {% block javascript %}{% endblock %}
+	<!--<script src="https://swisnl.github.io/jQuery-contextMenu/js/theme.js"></script>-->
+	<!--<script src="{% static 'js/jquery-ui.min.js' %}"></script>-->
+	<!--<script src="{% static 'js/app.js' %}"></script> -->
+
+	{% endblock %}
+
+  </head>
+  <body onload="initFunc()">
+	<div id="nav">
+		<table class="coretable">
+		<tr>	
+			<td>
+			<a href="/">home</a> |
+			</td>
+			<td>
+			{% if user.is_authenticated %}
+				welcome {{ user.username }} |
+			</td>
+			<td>
+			<form action="/logout/" method="get">
+				  <input type="submit" class="corebtn" value="Logout" name="logout">
+			</form>
+			</td>
+			{% else %}
+			<td>
+			<a href="/login/">login</a> |
+			</td>
+			<td>
+			<a href="/register/">register</a>
+			</td>
+			{% endif %}
+			<td>
+				<div id="notification" style="display: none;">
+					<span class="dismiss"><a title="dismiss this notification">x</a></span>
+			</div>
+
+
+						</td>
+		</tr>
+		</table>
+	</div>
+
+	<h1>{% block head %}{% endblock %}</h1>
+	{% block content %}{% endblock %}
   </body>
 </html>
+
+

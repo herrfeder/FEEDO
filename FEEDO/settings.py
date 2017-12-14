@@ -25,7 +25,7 @@ SECRET_KEY = '92p&j(06s9c9!f79j5e7i$+v46h0%z(*k$@u19l52$79w9-yyp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["10.8.10.1","127.0.0.1"]
+ALLOWED_HOSTS = ["10.8.10.1","127.0.0.1","192.168.178.46"]
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE = [
@@ -64,6 +65,11 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+        
+       
+    'libraries':{ 'safestring':
+                  'rsscore.templatetags.safestring',
+                }
         },
     },
 ]
@@ -117,5 +123,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
+
+SITE_ID = 2
 
 STATIC_URL = '/static/'

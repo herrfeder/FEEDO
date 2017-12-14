@@ -160,13 +160,18 @@ class FeedObject(object):
 
 
 
+
+
     def convert_str_to_dict(self,element):
+        ''' converts attribute string like
+            class: top & id:center to a dict of attributes'''
+
         attr_dict = {}
         attr_str = str(self.element_dict[element][2])
         if not attr_str:
             return None
 
-        el_list = attr_str.split(" ")
+        el_list = attr_str.split(" &")
         for el in el_list:
             attr_dict[el.split(":")[0]]=el.split(":")[1]
 

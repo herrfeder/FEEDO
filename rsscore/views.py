@@ -5,6 +5,9 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template import loader
 from django.http import JsonResponse
+from django.contrib.auth import logout as django_logout
+from django.contrib.auth import login as django_login
+from django.contrib.auth import authenticate
 from .models import Feed
 from .forms import CreateFeedForm
 import os,sys
@@ -58,12 +61,45 @@ click_dict = {}
 global FrameObject
 FrameObject = FrameSite()
 
+def checklogin(request):
+  if request.method:
+    user=authenticate(username=request.POST.get('username'),password=request.POST.get('password'))
+    if user is not None:
+        if user.is_active:
+            django_login(request,user)
+            return render(request,
+                          'index.html',
+                          {'action':'login'})
+    else:
+        return HttpResponse("Invalid login")
+
+def login(request):
+    return render(request,
+                  'login.html')
+
+def logout(request):
+      if(request.GET.get('logout')):
+              django_logout(request)
+              return render(request,
+                            'index.html',
+                            {'action':'logout'})
+
+
+
+def index(request):
+    return render(request, 
+                      'index.html',
+                      {'user':request.user})
+
+
+'''
 def index(request):
     latest_rssfeed_list = Feed.objects.order_by('-id')[:5]
     template = loader.get_template('rsscore/index.html')
     context = {
         'latest_rssfeed_list':latest_rssfeed_list }
     return HttpResponse(template.render(context,request))
+'''
 
 def processframe(request):
     iframe = request.POST.get('framedata',None)

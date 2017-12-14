@@ -21,6 +21,6 @@ admin.autodiscover()
 
 urlpatterns = [
 
-    url(r'^rss/', include('rsscore.urls')),
+    url(r'', include('rsscore.urls')),
     url(r'^admin/', admin.site.urls),
 ]
